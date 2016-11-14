@@ -1,0 +1,38 @@
+plugins {
+    id "java"
+    id "com.github.johnrengelman.shadow" version "1.2.4"
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.javassist:javassist:3.18.1-GA'
+
+    testCompile "org.slf4j:slf4j-simple:+"
+    testCompile "org.testcontainers:testcontainers:1.1.6"
+}
+
+jar {
+    manifest {
+        attributes('Premain-Class': 'com.example.superagent.Agent')
+    }
+}
+
+shadowJar {
+    baseName = 'agent'
+    classifier = ''
+
+    relocate 'javassist', 'com.exmaple.javassist'
+}
+
+test {
+    dependsOn shadowJar
+
+    testLogging {
+        showStandardStreams true
+    }
+}
+
+sourceSets.test.resources.srcDir shadowJar.outputs.files.singleFile.parentFile
