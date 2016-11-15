@@ -1,10 +1,9 @@
-import org.junit.Assert;
+import feign.Response;
 import org.junit.ClassRule;
 import org.junit.Test;
 import support.BasicTestApp;
 
-import java.net.HttpURLConnection;
-import java.net.URI;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AgentTest {
 
@@ -13,13 +12,11 @@ public class AgentTest {
 
     @Test
     public void testIt() throws Exception {
-        URI uri = URI.create(app.getURL() + "/hello/");
+        Response response = app.getClient().getHello();
 
-        HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
-        try {
-            Assert.assertEquals(connection.getHeaderField("X-My-Super-Header"), "header value");
-        } finally {
-            connection.disconnect();
-        }
+        assertThat(response.headers().get("X-My-Super-Header"))
+                .isNotNull()
+                .hasSize(1)
+                .containsExactly("header value");
     }
 }

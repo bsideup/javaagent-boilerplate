@@ -1,14 +1,20 @@
 package support;
 
+import feign.Feign;
+import feign.RequestLine;
+import feign.Response;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.HttpWaitStrategy;
+import org.testcontainers.shaded.com.github.dockerjava.api.command.InspectContainerResponse;
 
 import java.time.Duration;
 
 public class BasicTestApp<SELF extends BasicTestApp<SELF>> extends GenericContainer<SELF> {
+
+    Client client;
 
     public BasicTestApp(String script) {
         super("zeroturnaround/groovy:2.4.5");
@@ -38,7 +44,19 @@ public class BasicTestApp<SELF extends BasicTestApp<SELF>> extends GenericContai
         );
     }
 
-    public String getURL() {
-        return "http://" + getContainerIpAddress() + ":" + getMappedPort(4567);
+    public Client getClient() {
+        return client;
+    }
+
+    @Override
+    protected void containerIsStarted(InspectContainerResponse containerInfo) {
+        super.containerIsStarted(containerInfo);
+
+        client = Feign.builder().target(Client.class, "http://" + getContainerIpAddress() + ":" + getMappedPort(4567));
+    }
+
+    public interface Client {
+        @RequestLine("GET /hello/")
+        Response getHello();
     }
 }
