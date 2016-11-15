@@ -18,11 +18,12 @@ public class Agent {
             @Override
             public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined,
                                     ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
-                ClassPool cp = ClassPool.getDefault();
-                cp.appendClassPath(new LoaderClassPath(loader));
 
-                if (className.equals("spark/webserver/JettyHandler")) {
+                if ("spark/webserver/JettyHandler".equals(className)) {
                     try {
+                        ClassPool cp = new ClassPool();
+                        cp.appendClassPath(new LoaderClassPath(loader));
+
                         CtClass ct = cp.makeClass(new ByteArrayInputStream(classfileBuffer));
 
                         CtMethod ctMethod = ct.getDeclaredMethod("doHandle");
