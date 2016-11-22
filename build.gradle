@@ -8,7 +8,9 @@ repositories {
 }
 
 dependencies {
-    compile 'org.javassist:javassist:3.18.1-GA'
+    compile "net.bytebuddy:byte-buddy:1.5.6"
+
+    compileOnly "com.sparkjava:spark-core:2.1"
 
     testCompile 'ch.qos.logback:logback-classic:1.1.2'
     testCompile "org.testcontainers:testcontainers:1.1.6"
@@ -23,7 +25,11 @@ dependencies {
 
 jar {
     manifest {
-        attributes('Premain-Class': 'com.example.superagent.Agent')
+        attributes(
+                'Premain-Class': 'com.example.superagent.Agent',
+                'Can-Redefine-Classes': 'true',
+                'Can-Retransform-Classes': 'true',
+        )
     }
 }
 
@@ -31,7 +37,7 @@ shadowJar {
     baseName = 'agent'
     classifier = ''
 
-    relocate 'javassist', 'com.exmaple.javassist'
+    relocate 'net.bytebuddy', 'com.exmaple.net.bytebuddy'
 }
 
 test {
