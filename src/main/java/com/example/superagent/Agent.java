@@ -13,7 +13,6 @@ public class Agent {
                 .type(named("spark.webserver.JettyHandler"))
                 .transform(
                         new AgentBuilder.Transformer.ForAdvice()
-                                .include(JettyHandlerAdvice.class.getClassLoader())
                                 .advice(named("doHandle"), JettyHandlerAdvice.class.getName())
                 )
                 .installOn(instrumentation);
