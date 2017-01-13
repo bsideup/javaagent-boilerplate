@@ -1,6 +1,7 @@
 package com.example.superagent;
 
 import net.bytebuddy.agent.builder.AgentBuilder;
+import net.bytebuddy.agent.builder.AgentBuilder.Transformer;
 
 import java.lang.instrument.Instrumentation;
 
@@ -11,10 +12,7 @@ public class Agent {
     public static void premain(String args, Instrumentation instrumentation) {
         new AgentBuilder.Default()
                 .type(named("spark.webserver.JettyHandler"))
-                .transform(
-                        new AgentBuilder.Transformer.ForAdvice()
-                                .advice(named("doHandle"), JettyHandlerAdvice.class.getName())
-                )
+                .transform(new Transformer.ForAdvice().advice(named("doHandle"), JettyHandlerAdvice.class.getName()))
                 .installOn(instrumentation);
     }
 }
