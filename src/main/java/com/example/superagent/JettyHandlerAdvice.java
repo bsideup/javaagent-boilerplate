@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 class JettyHandlerAdvice {
 
     @Advice.OnMethodEnter
-    public static void doHandle(@Advice.AllArguments Object[] args) {
-        ((HttpServletResponse) args[3]).setHeader("X-My-Super-Header", "header value");
+    public static void doHandle(@Advice.Argument(3) HttpServletResponse response) {
+        response.setHeader("X-My-Super-Header", "header value");
     }
 }
