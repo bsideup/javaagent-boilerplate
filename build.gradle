@@ -11,7 +11,7 @@ dependencies {
     compile 'org.javassist:javassist:3.18.1-GA'
 
     testCompile 'ch.qos.logback:logback-classic:1.1.2'
-    testCompile "org.testcontainers:testcontainers:1.1.6"
+    testCompile "org.testcontainers:testcontainers:1.2.1"
     testCompile "io.github.openfeign:feign-core:9.3.1"
     testCompile 'org.assertj:assertj-core:3.5.2'
     testCompileOnly "org.projectlombok:lombok:1.16.10"
