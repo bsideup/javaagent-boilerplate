@@ -24,6 +24,6 @@ public class GroovyTestApp<SELF extends GroovyTestApp<SELF>> extends GenericCont
     }
 
     public String getURL() {
-        return "http://" + getContainerIpAddress() + ":" + getMappedPort(getExposedPorts().get(0));
+        return "http://" + getHost() + ":" + getMappedPort(getExposedPorts().get(0));
     }
 }
