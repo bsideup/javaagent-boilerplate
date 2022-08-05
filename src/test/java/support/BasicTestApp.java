@@ -4,7 +4,7 @@ import feign.Feign;
 import feign.RequestLine;
 import feign.Response;
 import lombok.Getter;
-import org.testcontainers.containers.wait.HttpWaitStrategy;
+import org.testcontainers.containers.wait.strategy.HttpWaitStrategy;
 
 public class BasicTestApp extends GroovyTestApp<BasicTestApp> {
 
